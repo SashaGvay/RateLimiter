@@ -5,7 +5,7 @@
 
 ### install:
 ```
-go get github.com/yourusername/rate_limiter
+go get github.com/SashaGvay/RateLimiter
 ```
 
 ### use:
