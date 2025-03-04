@@ -8,7 +8,7 @@ import (
 
 func TestRateLimiter_Wait(t *testing.T) {
 	ctx := context.Background()
-	rps := 5
+	rps := time.Duration(5) * time.Second
 	rl := NewRateLimiter(rps)
 	defer rl.Stop()
 
@@ -20,14 +20,14 @@ func TestRateLimiter_Wait(t *testing.T) {
 		t.Errorf("Unexpected error: %v", err)
 	}
 
-	expectedMin := time.Second / time.Duration(rps)
+	expectedMin := time.Second / rps
 	if duration < expectedMin {
 		t.Errorf("Expected at least %v, but got %v", expectedMin, duration)
 	}
 }
 
 func TestRateLimiter_WaitWithContextCancel(t *testing.T) {
-	rl := NewRateLimiter(1)
+	rl := NewRateLimiter(1 * time.Second)
 	defer rl.Stop()
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Millisecond)
@@ -47,7 +47,7 @@ func TestRateLimiter_WaitWithContextCancel(t *testing.T) {
 }
 
 func TestRateLimiter_Stop(t *testing.T) {
-	rl := NewRateLimiter(2) // 2 запроса в секунду
+	rl := NewRateLimiter(2 * time.Second) // 2 запроса в секунду
 	rl.Stop()
 
 	ctx, cancel := context.WithTimeout(context.Background(), 100*time.Millisecond)

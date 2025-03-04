@@ -9,13 +9,9 @@ type RateLimiter struct {
 	ticker *time.Ticker
 }
 
-func NewRateLimiter(rps int) *RateLimiter {
-	if rps <= 0 {
-		panic("rps must be greater than 0")
-	}
-
+func NewRateLimiter(duration time.Duration) *RateLimiter {
 	return &RateLimiter{
-		ticker: time.NewTicker(time.Second / time.Duration(rps)),
+		ticker: time.NewTicker(duration),
 	}
 }
 
